@@ -52,4 +52,11 @@ describe('DbLoadPlanets', () => {
     const planets = await sut.load()
     expect(planets).toEqual(makeFakePlanets())
   })
+
+  test('Should throws if LoadPlanetsRepository throws', async () => {
+    const { sut, loadPlanetsRepositoryStub } = makeSut()
+    jest.spyOn(loadPlanetsRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.load()
+    await expect(promise).rejects.toThrow()
+  })
 })
