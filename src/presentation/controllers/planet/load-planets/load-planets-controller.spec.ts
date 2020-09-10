@@ -1,6 +1,6 @@
 import { LoadPlanetsController } from './load-planets-controller'
 import { PlanetModel, LoadPlanets } from './load-planets-controller-protocols'
-import { ok } from '../../../helpers/http/http-helper'
+import { ok, serverError } from '../../../helpers/http/http-helper'
 
 const makeFakePlanets = (): PlanetModel[] => {
   return [{
@@ -46,5 +46,12 @@ describe('LoadPlanets Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(ok(makeFakePlanets()))
+  })
+
+  test('Should return 500 if loadPlanets throws', async () => {
+    const { sut, loadPlanetsStub } = makeSut()
+    jest.spyOn(loadPlanetsStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
