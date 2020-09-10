@@ -8,6 +8,11 @@ const makeFakePlanets = (): PlanetModel[] => {
     name: 'any_name',
     mass: 27.5,
     hasStation: true
+  }, {
+    id: 2,
+    name: 'other_name',
+    mass: 22.2,
+    hasStation: false
   }]
 }
 
