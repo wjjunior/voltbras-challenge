@@ -5,7 +5,7 @@ import { LoadPlanetsRepository } from '@/data/protocols/db/planet/load-planets-r
 export class DbLoadPlanets implements LoadPlanets {
   constructor (private readonly loadPlanetsRepository: LoadPlanetsRepository) {}
   async load (): Promise<PlanetModel[]> {
-    await this.loadPlanetsRepository.loadAll()
-    return []
+    const planets = await this.loadPlanetsRepository.loadAll()
+    return planets
   }
 }
