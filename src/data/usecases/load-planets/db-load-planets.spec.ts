@@ -46,4 +46,10 @@ describe('DbLoadPlanets', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+
+  test('Should return a list of Planets on success', async () => {
+    const { sut } = makeSut()
+    const planets = await sut.load()
+    expect(planets).toEqual(makeFakePlanets())
+  })
 })
