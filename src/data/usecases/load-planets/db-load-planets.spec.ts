@@ -16,16 +16,33 @@ const makeFakePlanets = (): PlanetModel[] => {
   }]
 }
 
+interface SutTypes {
+  sut: DbLoadPlanets
+  loadPlanetsRepositoryStub: LoadPlanetsRepository
+}
+
+const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
+  class LoadPlanetsRepositoryStub implements LoadPlanetsRepository {
+    async loadAll (): Promise<PlanetModel[]> {
+      return new Promise(resolve => resolve(makeFakePlanets()))
+    }
+  }
+  return new LoadPlanetsRepositoryStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadPlanetsRepositoryStub = makeLoadPlanetsRepository()
+  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub)
+  return {
+    sut,
+    loadPlanetsRepositoryStub
+  }
+}
+
 describe('DbLoadPlanets', () => {
   test('Should call LoadPlanetsRepository', async () => {
-    class LoadPlanetsRepositoryStub implements LoadPlanetsRepository {
-      async loadAll (): Promise<PlanetModel[]> {
-        return new Promise(resolve => resolve(makeFakePlanets()))
-      }
-    }
-    const loadPlanetsRepositoryStub = new LoadPlanetsRepositoryStub()
+    const { sut, loadPlanetsRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadPlanetsRepositoryStub, 'loadAll')
-    const sut = new DbLoadPlanets(loadPlanetsRepositoryStub)
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
