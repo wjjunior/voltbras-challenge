@@ -1,8 +1,8 @@
 import { PlanetRepository } from './planet-repository'
-import ArcsecondHelper from '../helpers/arcsecond-helper'
+import ArcsecondApi from '../helpers/arcsecond-api'
 
 beforeAll(() => {
-  jest.spyOn(ArcsecondHelper.prototype, 'getRequest').mockImplementation(
+  jest.spyOn(ArcsecondApi.prototype, 'getRequest').mockImplementation(
     async () =>
       new Promise((resolve) =>
         resolve({
@@ -26,7 +26,8 @@ afterAll(() => {
 })
 
 const makeSut = (): PlanetRepository => {
-  return new PlanetRepository()
+  const arcsecondApi = new ArcsecondApi()
+  return new PlanetRepository(arcsecondApi)
 }
 
 describe('Planet Arcsecond Repository', () => {

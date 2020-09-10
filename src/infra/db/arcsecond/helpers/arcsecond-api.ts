@@ -1,6 +1,6 @@
 import { RESTDataSource } from 'apollo-datasource-rest'
 
-export default class ArcsecondHelper extends RESTDataSource {
+export default class ArcsecondApi extends RESTDataSource {
   constructor () {
     super()
     this.baseURL = 'https://api.arcsecond.io/'
