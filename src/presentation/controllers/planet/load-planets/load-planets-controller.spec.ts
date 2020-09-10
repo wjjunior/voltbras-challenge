@@ -4,15 +4,11 @@ import { ok, serverError } from '../../../helpers/http/http-helper'
 
 const makeFakePlanets = (): PlanetModel[] => {
   return [{
-    id: 1,
     name: 'any_name',
-    mass: 27.5,
-    hasStation: true
+    mass: 27.5
   }, {
-    id: 2,
     name: 'other_name',
-    mass: 22.2,
-    hasStation: false
+    mass: 22.2
   }]
 }
 
