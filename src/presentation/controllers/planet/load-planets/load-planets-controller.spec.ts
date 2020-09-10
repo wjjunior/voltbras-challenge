@@ -10,16 +10,33 @@ const makeFakePlanets = (): PlanetModel[] => {
   }]
 }
 
+interface SutTypes {
+  sut: LoadPlanetsController
+  loadPlanetsStub: LoadPlanets
+}
+
+const makeLoadPlanets = (): LoadPlanets => {
+  class LoadPlanetsStub implements LoadPlanets {
+    async load (): Promise<PlanetModel[]> {
+      return new Promise(resolve => resolve(makeFakePlanets()))
+    }
+  }
+  return new LoadPlanetsStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadPlanetsStub = makeLoadPlanets()
+  const sut = new LoadPlanetsController(loadPlanetsStub)
+  return {
+    sut,
+    loadPlanetsStub
+  }
+}
+
 describe('LoadPlanets Controller', () => {
   test('Should call LoadPlanets', async () => {
-    class LoadPlanetsStub implements LoadPlanets {
-      async load (): Promise<PlanetModel[]> {
-        return new Promise(resolve => resolve(makeFakePlanets()))
-      }
-    }
-    const loadPlanetsStub = new LoadPlanetsStub()
+    const { sut, loadPlanetsStub } = makeSut()
     const loadSpy = jest.spyOn(loadPlanetsStub, 'load')
-    const sut = new LoadPlanetsController(loadPlanetsStub)
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
   })
