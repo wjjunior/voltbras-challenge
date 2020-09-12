@@ -31,13 +31,16 @@ describe('Planet', () => {
     const { sut, arcsecondApiStub } = makeSut()
     const SUITABLE_PLANETS_QUERY = `
         query {
-            suitablePlanets {
+            suitablePlanets(pages: 1) {
                 name,
                 mass
             }
         }
     `
     jest.spyOn(arcsecondApiStub, 'getRequest').mockReturnValueOnce(new Promise((resolve) => resolve({
+      count: 1234,
+      next: 'any_next',
+      previous: 'any_previous',
       results: [
         {
           name: 'any_name',

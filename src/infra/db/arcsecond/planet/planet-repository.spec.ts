@@ -36,7 +36,7 @@ describe('Planet Arcsecond Repository', () => {
           }
         ]
       })))
-      const planets = await sut.loadAll()
+      const planets = await sut.loadAll(1)
       expect(planets.length).toBe(2)
     })
   })

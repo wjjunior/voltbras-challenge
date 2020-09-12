@@ -27,7 +27,7 @@ interface SutTypes {
 
 const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
   class LoadPlanetsRepositoryStub implements LoadPlanetsRepository {
-    async loadAll (): Promise<PlanetModel[]> {
+    async loadAll (pages: number): Promise<PlanetModel[]> {
       return new Promise((resolve) => resolve(makeFakePlanets()))
     }
   }
@@ -48,13 +48,13 @@ describe('DbLoadPlanets', () => {
   test('Should call LoadPlanetsRepository', async () => {
     const { sut, loadPlanetsRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadPlanetsRepositoryStub, 'loadAll')
-    await sut.load()
+    await sut.load(1)
     expect(loadAllSpy).toHaveBeenCalled()
   })
 
   test('Should return a list of Planets on success', async () => {
     const { sut } = makeSut()
-    const planets = await sut.load()
+    const planets = await sut.load(1)
     expect(planets.length).toBe(2)
   })
 
@@ -65,7 +65,7 @@ describe('DbLoadPlanets', () => {
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error()))
       )
-    const promise = sut.load()
+    const promise = sut.load(1)
     await expect(promise).rejects.toThrow()
   })
 })
