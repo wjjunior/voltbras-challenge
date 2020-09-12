@@ -40,5 +40,8 @@
     "apollo-server": "^2.17.0",
     "graphql": "^15.3.0",
     "ramda": "^0.27.1"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
