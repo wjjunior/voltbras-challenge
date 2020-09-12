@@ -1,0 +1,35 @@
+version: "3"
+services:
+  # Node
+  voltbras-challenge-app:
+    build: .
+    container_name: voltbras-challenge-app
+    restart: unless-stopped
+    working_dir: /usr/src/voltbras-challenge/
+    volumes:
+      - ./:/usr/src/voltbras-challenge/
+    depends_on:
+      - postgres
+    networks:
+      - voltbras-challenge-network
+    ports:
+      - 4000:4000
+  # PostgresSQL
+  postgres:
+    image: postgres:12.4-alpine
+    restart: unless-stopped
+    volumes:
+      - postgres:/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    networks:
+      - voltbras-challenge-network
+
+volumes: 
+    postgres:
+
+networks:
+  voltbras-challenge-network:
+    driver: bridge
