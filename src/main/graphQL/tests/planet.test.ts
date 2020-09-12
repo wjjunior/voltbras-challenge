@@ -1,26 +1,43 @@
-import { createTestClient } from 'apollo-server-testing'
+import { createTestClient, ApolloServerTestClient } from 'apollo-server-testing'
 import ArcsecondApi from '../../../infra/db/arcsecond/helpers/arcsecond-api'
 import { typeDefs, resolvers } from '../'
 import { ApolloServer } from 'apollo-server'
 
+interface SutTypes {
+  sut: ApolloServerTestClient
+  arcsecondApiStub: ArcsecondApi
+}
+
+const makeSut = (): SutTypes => {
+  const arcsecondApiStub = new ArcsecondApi()
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    dataSources: () => {
+      return {
+        arcsecondApi: arcsecondApiStub
+      }
+    }
+  })
+  const sut = createTestClient(server)
+  return {
+    sut,
+    arcsecondApiStub
+  }
+}
+
 describe('Planet', () => {
   test('Should return suitable planets', async () => {
-    const arcsecondApi = new ArcsecondApi()
-
-    const server = new ApolloServer({
-      typeDefs,
-      resolvers,
-      dataSources: () => {
-        return {
-          arcsecondApi
+    const { sut, arcsecondApiStub } = makeSut()
+    const SUITABLE_PLANETS_QUERY = `
+        query {
+            suitablePlanets {
+                name,
+                mass
+            }
         }
-      }
-    })
-
-    const fakePlanetsQuery = {
-      count: 0,
-      next: 'any_value',
-      previous: 'any_value',
+    `
+    jest.spyOn(arcsecondApiStub, 'getRequest').mockReturnValueOnce(new Promise((resolve) => resolve({
       results: [
         {
           name: 'any_name',
@@ -37,22 +54,8 @@ describe('Planet', () => {
           }
         }
       ]
-    }
-
-    const SUITABLE_PLANETS_QUERY = `
-        query {
-            suitablePlanets {
-                name,
-                mass
-            }
-        }
-    `
-
-    arcsecondApi.getRequest = jest.fn(async () => fakePlanetsQuery)
-
-    const { query } = createTestClient(server)
-
-    const res = await query({ query: SUITABLE_PLANETS_QUERY })
+    })))
+    const res = await sut.query({ query: SUITABLE_PLANETS_QUERY })
     expect(res).toMatchSnapshot()
     expect(res.data.suitablePlanets.length).toBe(2)
   })
