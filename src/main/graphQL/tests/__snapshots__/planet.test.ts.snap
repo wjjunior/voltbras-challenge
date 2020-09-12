@@ -5,10 +5,6 @@ Object {
   "data": Object {
     "suitablePlanets": Array [
       Object {
-        "mass": 12,
-        "name": "any_name",
-      },
-      Object {
         "mass": 32,
         "name": "other_name",
       },

@@ -57,6 +57,6 @@ describe('Planet', () => {
     })))
     const res = await sut.query({ query: SUITABLE_PLANETS_QUERY })
     expect(res).toMatchSnapshot()
-    expect(res.data.suitablePlanets.length).toBe(2)
+    expect(res.data.suitablePlanets.length).toBe(1)
   })
 })

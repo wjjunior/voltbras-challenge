@@ -1,15 +1,23 @@
 import { LoadPlanetsRepository } from '@/data/protocols/db/planet/load-planets-repository'
 import { PlanetModel } from '@/domain/models/planet'
 import { DbLoadPlanets } from './db-load-planets'
+import { PlanetAdapter } from '../../../infra/planet/planet-adapter'
 
 const makeFakePlanets = (): PlanetModel[] => {
-  return [{
-    name: 'any_name',
-    mass: 27.5
-  }, {
-    name: 'other_name',
-    mass: 22.2
-  }]
+  return [
+    {
+      name: 'any_name',
+      mass: 27.5
+    },
+    {
+      name: 'other_name',
+      mass: 22.2
+    },
+    {
+      name: 'other_name',
+      mass: 30.2
+    }
+  ]
 }
 
 interface SutTypes {
@@ -20,7 +28,7 @@ interface SutTypes {
 const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
   class LoadPlanetsRepositoryStub implements LoadPlanetsRepository {
     async loadAll (): Promise<PlanetModel[]> {
-      return new Promise(resolve => resolve(makeFakePlanets()))
+      return new Promise((resolve) => resolve(makeFakePlanets()))
     }
   }
   return new LoadPlanetsRepositoryStub()
@@ -28,7 +36,8 @@ const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
 
 const makeSut = (): SutTypes => {
   const loadPlanetsRepositoryStub = makeLoadPlanetsRepository()
-  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub)
+  const planetAdapter = new PlanetAdapter()
+  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub, planetAdapter)
   return {
     sut,
     loadPlanetsRepositoryStub
@@ -46,12 +55,16 @@ describe('DbLoadPlanets', () => {
   test('Should return a list of Planets on success', async () => {
     const { sut } = makeSut()
     const planets = await sut.load()
-    expect(planets).toEqual(makeFakePlanets())
+    expect(planets.length).toBe(2)
   })
 
   test('Should throws if LoadPlanetsRepository throws', async () => {
     const { sut, loadPlanetsRepositoryStub } = makeSut()
-    jest.spyOn(loadPlanetsRepositoryStub, 'loadAll').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest
+      .spyOn(loadPlanetsRepositoryStub, 'loadAll')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      )
     const promise = sut.load()
     await expect(promise).rejects.toThrow()
   })
