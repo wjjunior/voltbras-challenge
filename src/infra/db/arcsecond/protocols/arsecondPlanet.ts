@@ -5,3 +5,10 @@ export interface ArcsecondPlanet {
     unit: string
   }
 }
+
+export interface ArcsecondPlanetReponse {
+  count: number
+  next: string
+  previous: string
+  results: ArcsecondPlanet[]
+}

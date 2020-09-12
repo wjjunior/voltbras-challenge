@@ -1,6 +1,7 @@
 import { RESTDataSource } from 'apollo-datasource-rest'
+import { ArcsecondApiRepository } from '../protocols/arcesond-api'
 
-export default class ArcsecondApi extends RESTDataSource {
+export default class ArcsecondApi extends RESTDataSource implements ArcsecondApiRepository {
   constructor () {
     super()
     this.baseURL = 'https://api.arcsecond.io/'

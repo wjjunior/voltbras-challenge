@@ -6,7 +6,8 @@ export class LoadPlanetsController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const planets = await this.loadPlanets.load()
+      const { pages } = httpRequest.body
+      const planets = await this.loadPlanets.load(pages)
       return ok(planets)
     } catch (error) {
       return serverError(error)

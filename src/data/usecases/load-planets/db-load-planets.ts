@@ -9,8 +9,8 @@ export class DbLoadPlanets implements LoadPlanets {
     private readonly isSuitabler: IsSuitabler
   ) {}
 
-  async load (): Promise<PlanetModel[]> {
-    const planets = await this.loadPlanetsRepository.loadAll()
+  async load (pages: number): Promise<PlanetModel[]> {
+    const planets = await this.loadPlanetsRepository.loadAll(pages)
     return planets.filter(this.isSuitabler.isSuitable)
   }
 }
