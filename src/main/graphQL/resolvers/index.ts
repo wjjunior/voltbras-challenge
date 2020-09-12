@@ -1,10 +1,17 @@
-import { graphqlResolverHelper } from '../../../infra/helpers/graphql-resolver-helper'
+import { makeLoadPlanetsController } from '../../../main/factories/controllers/planet/load-planets/load-planets-controller-factory'
+import { PlanetModel } from '../../../domain/models/planet'
+import { adaptGraphql } from '../../../main/adapters/graphql-adapter'
 
 export const resolvers = {
   Query: {
-    suitablePlanets: graphqlResolverHelper('')
+    suitablePlanets: async (_, args: any, { dataSources }): Promise<PlanetModel[]> => {
+      return adaptGraphql(makeLoadPlanetsController(dataSources.arcsecondApi), args)
+    }
   },
+
   Mutation: {
-    installStation: graphqlResolverHelper('')
+    installStation: (_, args: any, { dataSources }): any => {
+      return true
+    }
   }
 }

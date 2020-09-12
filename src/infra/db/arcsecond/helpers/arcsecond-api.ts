@@ -7,7 +7,6 @@ export default class ArcsecondApi extends RESTDataSource {
   }
 
   async getRequest (uri: string): Promise<any> {
-    const response = await this.get(`${this.baseURL}${uri}`)
-    return JSON.parse(response)
+    return await this.get(`${this.baseURL}${uri}`)
   }
 }
