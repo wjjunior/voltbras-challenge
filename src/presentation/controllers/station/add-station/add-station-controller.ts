@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from './add-station-controller-protocols'
-import { badRequest, serverError } from '../../../../presentation/helpers/http/http-helper'
+import { badRequest, serverError, ok } from '../../../../presentation/helpers/http/http-helper'
 import { AddStation } from '../../../../domain/usecases/add-station'
 
 export class AddStationController implements Controller {
@@ -15,10 +15,10 @@ export class AddStationController implements Controller {
         return badRequest(error)
       }
       const { planet } = httpRequest.body
-      await this.addStation.add({
+      const station = await this.addStation.add({
         planet
       })
-      return null
+      return ok(station)
     } catch (error) {
       return serverError(error)
     }
