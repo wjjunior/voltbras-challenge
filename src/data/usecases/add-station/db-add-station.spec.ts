@@ -47,4 +47,15 @@ describe('DbAddPlanet', () => {
     await sut.add(stationData)
     expect(addSpy).toHaveBeenCalledWith(stationData)
   })
+
+  test('Should throws if AddStationRepository throws', async () => {
+    const { sut, addStationRepositoryStub } = makeSut()
+    jest
+      .spyOn(addStationRepositoryStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      )
+    const promise = sut.add(makeFakeStationData())
+    await expect(promise).rejects.toThrow()
+  })
 })
