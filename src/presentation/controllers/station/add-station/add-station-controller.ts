@@ -14,8 +14,9 @@ export class AddStationController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { planet } = httpRequest.body
+      const { planet, name } = httpRequest.body
       const station = await this.addStation.add({
+        name,
         planet
       })
       return ok(station)

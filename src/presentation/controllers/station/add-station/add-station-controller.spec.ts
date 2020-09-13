@@ -13,7 +13,8 @@ import { StationModel } from '../../../../domain/models/station'
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    planet: 'any_planet'
+    name: 'any_name',
+    planet: 'valid_planet'
   }
 })
 
@@ -31,6 +32,7 @@ const makeAddStation = (): AddStation => {
     async add (data: AddStationModel): Promise<StationModel> {
       const fakeStation = {
         id: 1,
+        name: 'any_name',
         planet: 'valid_planet'
       }
       return await new Promise(resolve => resolve(fakeStation))
@@ -97,6 +99,7 @@ describe('AddSurvey Controller', () => {
     expect(httpResponse.statusCode).toBe(200)
     expect(httpResponse.body).toEqual({
       id: 1,
+      name: 'any_name',
       planet: 'valid_planet'
     })
   })

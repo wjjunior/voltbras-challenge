@@ -1,6 +1,7 @@
 import { StationModel } from '../models/station'
 
 export interface AddStationModel {
+  name: string
   planet: string
 }
 
