@@ -29,7 +29,11 @@ const makeValidation = (): Validation => {
 const makeAddStation = (): AddStation => {
   class AddStationStub implements AddStation {
     async add (data: AddStationModel): Promise<StationModel> {
-      return new Promise((resolve) => resolve())
+      const fakeStation = {
+        id: 1,
+        planet: 'valid_planet'
+      }
+      return await new Promise(resolve => resolve(fakeStation))
     }
   }
   return new AddStationStub()
@@ -85,5 +89,15 @@ describe('AddSurvey Controller', () => {
       )
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: 1,
+      planet: 'valid_planet'
+    })
   })
 })
