@@ -1,9 +1,11 @@
 import { Controller, HttpRequest, HttpResponse, Validation } from './add-station-controller-protocols'
 import { badRequest } from '../../../../presentation/helpers/http/http-helper'
+import { AddStation } from '../../../../domain/usecases/add-station'
 
 export class AddStationController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addStation: AddStation
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -11,6 +13,10 @@ export class AddStationController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    return new Promise(resolve => resolve(null))
+    const { planet } = httpRequest.body
+    await this.addStation.add({
+      planet
+    })
+    return null
   }
 }
