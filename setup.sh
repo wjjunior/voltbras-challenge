@@ -11,9 +11,8 @@ echo "]"
 read -p "Select an option: " option
 
 configure_app() {
-    npm update
-    npx prisma migrate save --experimental --name "init"
-    npx prisma migrate up --experimental
+    docker-compose exec voltbras-challenge-app npx prisma migrate save --experimental --name "init"
+    docker-compose exec voltbras-challenge-app npx prisma migrate up --experimental
 }
 
 if [[ option -eq 1 ]]; then
