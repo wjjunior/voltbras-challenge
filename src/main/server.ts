@@ -1,3 +1,8 @@
 import app from './config/app'
+import { PrismaHelper } from '../infra/db/postgresql/helpers/prismaHelper'
 
-app.listen().then(({ url }) => console.log(`🚀  Server ready at ${url}`))
+PrismaHelper.connect()
+  .then(async () => {
+    app.listen().then(({ url }) => console.log(`🚀  Server ready at ${url}`))
+  })
+  .catch(console.error)
