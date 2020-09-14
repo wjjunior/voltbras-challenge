@@ -53,6 +53,8 @@ Também utilizei packages de padronização de código e commits como o eslint, 
 
 Como se trata de uma versão dev a ser avaliada não preocupei em gerar a versão de produção e configurei o container para iniciar com "npm run dev".
 
+Fiz todo o projeto utilizando prática TDD, porém devido ao husky sempre executar todos os testes antes de aceitar o commit é necessário commitar os arquivos alterados antes do commit "test".
+
 > ### Dificuldades
 
 - lib RESTDataSource:
