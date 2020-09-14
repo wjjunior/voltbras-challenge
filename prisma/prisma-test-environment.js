@@ -16,14 +16,14 @@ class PrismaTestEnvironment extends NodeEnvironment {
     this.schema = `test_${nanoid()}`
 
     // Generate the pg connection string for the test schema
-    this.connectionString = `postgresql://postgres:postgres@localhost:5432/testing?schema=${this.schema}`
+    this.connectionString = `postgresql://postgres:postgres@localhost:5432/voltbras-challenge?schema=${this.schema}`
   }
 
   async setup () {
     // Set the required environment variable to contain the connection string
     // to our database test schema
-    process.env.POSTGRES_URL = this.connectionString
-    this.global.process.env.POSTGRES_URL = this.connectionString
+    process.env.DATABASE_URL = this.connectionString
+    this.global.process.env.DATABASE_URL = this.connectionString
 
     // Run the migrations to ensure our schema has the required structure
     await exec(`${prismaBinary} migrate up --experimental`)
