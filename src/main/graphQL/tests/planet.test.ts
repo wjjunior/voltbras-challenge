@@ -2,6 +2,15 @@ import { createTestClient, ApolloServerTestClient } from 'apollo-server-testing'
 import ArcsecondApi from '../../../infra/db/arcsecond/helpers/arcsecond-api'
 import { typeDefs, resolvers } from '../'
 import { ApolloServer } from 'apollo-server'
+import { PrismaHelper } from '../../../infra/db/postgresql/helpers/prismaHelper'
+
+beforeAll(async () => {
+  await PrismaHelper.connect()
+})
+
+afterAll(async () => {
+  await PrismaHelper.disconnect()
+})
 
 interface SutTypes {
   sut: ApolloServerTestClient
@@ -32,8 +41,9 @@ describe('Planet', () => {
     const SUITABLE_PLANETS_QUERY = `
         query {
             suitablePlanets(pages: 1) {
-                name,
+                name
                 mass
+                hasStation
             }
         }
     `

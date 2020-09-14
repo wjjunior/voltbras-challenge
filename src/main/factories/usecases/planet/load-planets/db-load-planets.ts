@@ -3,9 +3,11 @@ import { PlanetRepository } from '../../../../../infra/db/arcsecond/planet/plane
 import { DbLoadPlanets } from '../../../../../data/usecases/load-planets/db-load-planets'
 import ArcsecondApi from '../../../../../infra/db/arcsecond/helpers/arcsecond-api'
 import { PlanetAdapter } from '../../../../../infra/planet/planet-adapter'
+import { StationRepository } from '../../../../../infra/db/postgresql/station/station-repository'
 
 export const makeDbLoadPlanets = (arcsecondApi: ArcsecondApi): LoadPlanets => {
   const planetRepository = new PlanetRepository(arcsecondApi)
   const planetAdapter = new PlanetAdapter()
-  return new DbLoadPlanets(planetRepository, planetAdapter)
+  const stationRepository = new StationRepository()
+  return new DbLoadPlanets(planetRepository, planetAdapter, stationRepository)
 }

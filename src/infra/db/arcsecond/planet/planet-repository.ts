@@ -9,7 +9,9 @@ import * as R from 'ramda'
 import { asyncPool } from '../helpers/async-pool'
 
 export class PlanetRepository implements LoadPlanetsRepository {
-  constructor (private readonly arcsecondApi: ArcsecondApi) {}
+  constructor (
+    private readonly arcsecondApi: ArcsecondApi
+  ) {}
 
   async loadAll (pages: number): Promise<PlanetModel[]> {
     const queryPages = R.range(1, ++pages)

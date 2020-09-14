@@ -1,21 +1,42 @@
-import { LoadPlanetsRepository } from '@/data/protocols/db/planet/load-planets-repository'
-import { PlanetModel } from '@/domain/models/planet'
+import { LoadPlanetsRepository } from '../../../data/protocols/db/planet/load-planets-repository'
+import { PlanetModel } from '../../../domain/models/planet'
 import { DbLoadPlanets } from './db-load-planets'
 import { PlanetAdapter } from '../../../infra/planet/planet-adapter'
+import { LoadStationsByPlanetRepository } from '../../../data/protocols/db/station/load-stations-by-planet-repository'
+import { StationModel } from '../add-station/db-add-station-protocols'
 
 const makeFakePlanets = (): PlanetModel[] => {
   return [
     {
-      name: 'any_name',
+      name: 'any_planet_name',
       mass: 27.5
     },
     {
-      name: 'other_name',
+      name: 'other_planet_name',
       mass: 22.2
     },
     {
-      name: 'other_name',
+      name: 'some_planet_name',
+      mass: 40.2
+    },
+    {
+      name: 'another_planet_name',
       mass: 30.2
+    }
+  ]
+}
+
+const makeFakeStations = (): StationModel[] => {
+  return [
+    {
+      id: 1,
+      name: 'any_station_name',
+      planet: 'any_planet_name'
+    },
+    {
+      id: 2,
+      name: 'another_station_name',
+      planet: 'another_planet_name'
     }
   ]
 }
@@ -23,6 +44,7 @@ const makeFakePlanets = (): PlanetModel[] => {
 interface SutTypes {
   sut: DbLoadPlanets
   loadPlanetsRepositoryStub: LoadPlanetsRepository
+  loadStationsByPlanetRepositoryStub: LoadStationsByPlanetRepository
 }
 
 const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
@@ -34,13 +56,24 @@ const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
   return new LoadPlanetsRepositoryStub()
 }
 
+const makeLoadStationsByPlanetRepository = (): LoadStationsByPlanetRepository => {
+  class LoadStationsByPlanetRepositoryStub implements LoadStationsByPlanetRepository {
+    async loadByPlanetsNames (planet: string[]): Promise<StationModel[]> {
+      return new Promise((resolve) => resolve(makeFakeStations()))
+    }
+  }
+  return new LoadStationsByPlanetRepositoryStub()
+}
+
 const makeSut = (): SutTypes => {
   const loadPlanetsRepositoryStub = makeLoadPlanetsRepository()
   const planetAdapter = new PlanetAdapter()
-  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub, planetAdapter)
+  const loadStationsByPlanetRepositoryStub = makeLoadStationsByPlanetRepository()
+  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub, planetAdapter,loadStationsByPlanetRepositoryStub)
   return {
     sut,
-    loadPlanetsRepositoryStub
+    loadPlanetsRepositoryStub,
+    loadStationsByPlanetRepositoryStub
   }
 }
 
@@ -55,7 +88,9 @@ describe('DbLoadPlanets', () => {
   test('Should return a list of Planets on success', async () => {
     const { sut } = makeSut()
     const planets = await sut.load(1)
-    expect(planets.length).toBe(2)
+    expect(planets.length).toBe(3)
+    expect(planets[0].hasStation).toBeTruthy()
+    expect(planets[1].hasStation).toBeFalsy()
   })
 
   test('Should throws if LoadPlanetsRepository throws', async () => {
