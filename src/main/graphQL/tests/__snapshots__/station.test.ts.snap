@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports['Station Should add a new Station 1'] = `
+Object {
+  "data": Object {
+    "installStation": Object {
+      "id": "1",
+      "name": "any_name",
+      "planet": "any_planet",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`
