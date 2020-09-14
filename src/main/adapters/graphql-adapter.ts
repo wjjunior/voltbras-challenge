@@ -1,7 +1,6 @@
 import { Controller, HttpRequest } from '../../presentation/protocols'
-import { PlanetModel } from '../../domain/models/planet'
 
-export const adaptGraphql = async (controller: Controller, args: any): Promise<PlanetModel[]> => {
+export const adaptGraphql = async (controller: Controller, args: any): Promise<any> => {
   const httpRequest: HttpRequest = {
     body: args
   }

@@ -2,6 +2,7 @@ import { makeLoadPlanetsController } from '../../../main/factories/controllers/p
 import { makeAddStationController } from '../../../main/factories/controllers/station/add-station/add-station-controller-factory'
 import { PlanetModel } from '../../../domain/models/planet'
 import { adaptGraphql } from '../../../main/adapters/graphql-adapter'
+import { StationModel } from '../../../domain/models/station'
 
 export const resolvers = {
   Query: {
@@ -11,7 +12,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    installStation: (_, args: any): any => {
+    installStation: async (_, args: any): Promise<StationModel> => {
       return adaptGraphql(makeAddStationController(), { ...args.input })
     }
   }
