@@ -52,11 +52,11 @@ describe('Station', () => {
     `
     const res = await sut.mutate({
       mutation: INSTALL_STATION,
-      variables: { input: { name: 'any_name', planet: 'any_planet' } }
+      variables: { input: { name: 'any_name', planet: '2M1510A b' } }
     })
     expect(res).toMatchSnapshot()
     expect(res.data.installStation.id).toBe('1')
     expect(res.data.installStation.name).toBe('any_name')
-    expect(res.data.installStation.planet).toBe('any_planet')
+    expect(res.data.installStation.planet).toBe('2M1510A b')
   })
 })
