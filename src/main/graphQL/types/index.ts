@@ -9,11 +9,17 @@ export const typeDefs = gql`
 
   type Station {
     id: ID!
-    planetName: String!
+    name: String!
+    planet: String!
+  }
+
+  input StationInput {
+    name: String!
+    planet: String!
   }
 
   type Mutation {
-    installStation(planetName: String!): Station!
+    installStation(input: StationInput): Station!
   }
 
   type Query {
