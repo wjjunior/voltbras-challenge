@@ -11,6 +11,7 @@ echo "]"
 read -p "Select an option: " option
 
 configure_app() {
+    npm install
     docker-compose exec voltbras-challenge-app npx prisma migrate save --experimental --name "init"
     docker-compose exec voltbras-challenge-app npx prisma migrate up --experimental
 }
