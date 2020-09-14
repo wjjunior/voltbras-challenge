@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Planet Should return suitable planets 1`] = `
+exports['Planet Should return suitable planets 1'] = `
 Object {
   "data": Object {
     "suitablePlanets": Array [
@@ -19,4 +19,4 @@ Object {
     },
   },
 }
-`;
+`
