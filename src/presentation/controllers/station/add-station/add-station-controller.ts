@@ -3,12 +3,13 @@ import { badRequest, serverError, ok } from '../../../../presentation/helpers/ht
 import { AddStation } from '../../../../domain/usecases/add-station'
 
 export class AddStationController implements Controller {
-  constructor (
+  constructor(
     private readonly validation: Validation,
     private readonly addStation: AddStation
-  ) {}
+  ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  // more tipageeemmmm
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const error = await this.validation.validate(httpRequest.body)
       if (error) {

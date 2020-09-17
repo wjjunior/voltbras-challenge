@@ -30,3 +30,5 @@ export const noContent = (): HttpResponse => ({
   statusCode: 204,
   body: null
 })
+
+// caramba gostei bastante desse style
