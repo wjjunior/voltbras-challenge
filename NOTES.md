@@ -20,14 +20,24 @@ Outros pontos:
 
 ```typescript
 type Request<T> = { input: T };
+type ResponseStatus = 'Unauthorized' | 'ServerError' | 'OK' | ...;
 type Response<T> = {
   data?: T,
-  status: 'Unauthorized' | 'ServerError' | 'OK' | ...
+  status: ResponseStatus;
 };
 
 type Handler<Req, Res> = (req: Request<Req>) => Response<Res>
 // ou usar type-constraint
 // type Handler<Req extends Request, ...> ...
+
+// e daí finalmente só atrelar o necessário a HTTP
+const getHTTPStatusCode = (status: ResponseStatus): number => {
+  switch (status) {
+    case 'OK': return 200;
+    case 'Unauthorized': return 401;
+    case 'ServerError': return 500;
+  }
+}
 ```
 
 PS:
