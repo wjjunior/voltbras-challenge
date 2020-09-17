@@ -15,6 +15,8 @@ foram desnecessárias. Sinto que POO deu uma ótima estruturada em pensamentos, 
 Outros pontos:
 
 - Gostei bastante do test coverage, ótimo ponto, até aprendi umas coisas do jest que não sabia;
+- Gostei bastante da documentação, da explicação inicial do projeto;
+- Gostei de ter automatizado o setup do projeto, junto com rodar tudo usando docker;
 - Gostei de ter usado Typescript, porém senti falta de tipagem em vários lugares, teve vários `any` e poderia ter utilizado mais template types(veja a seção em seguida);
 - Achei meio estranho ter criado as interfaces HttpRequest e HttpResponse, acredito que poderia muito bem não ter se atrelado a camada de rede(HTTP), e talvez feito uso de algum template type(generic) para passar a ideia de que a response tem que ter um campo com os argumentos e a response avisando se deu certo, ou errado:
 
