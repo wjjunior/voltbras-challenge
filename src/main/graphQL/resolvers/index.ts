@@ -6,14 +6,13 @@ import { StationModel } from '../../../domain/models/station'
 
 export const resolvers = {
   Query: {
-    suitablePlanets: async (_, args: any, { dataSources }): Promise<PlanetModel[]> => {
-      return adaptGraphql(makeLoadPlanetsController(dataSources.arcsecondApi), args)
-    }
+    // perdemos toda a tipagem dos args
+    suitablePlanets: (_, args: { pages: number }, { dataSources }): Promise<PlanetModel[]> =>
+      adaptGraphql(makeLoadPlanetsController(dataSources.arcsecondApi), args)
   },
 
   Mutation: {
-    installStation: async (_, args: any): Promise<StationModel> => {
-      return adaptGraphql(makeAddStationController(), { ...args.input })
-    }
+    installStation: (_, args: { input: { name: string, planet: string } }): Promise<StationModel> =>
+      adaptGraphql(makeAddStationController(), { ...args.input })
   }
 }

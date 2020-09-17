@@ -1,12 +1,13 @@
-import { SuitablePlanetValidation } from './suitable-planet-validation'
+import { makeSuitablePlanetValidation } from './suitable-planet-validation'
 import { InvalidParamError } from '../../presentation/errors'
 import { SuitablePlanetValidator } from '../protocols/suitable-planet-validator'
+import { Validation } from '../../presentation/protocols/validation';
 
 const field = 'any_word'
 
 const makeSuitableValidator = (): SuitablePlanetValidator => {
   class SuitablePlanetValidatorStub implements SuitablePlanetValidator {
-    async isValid (planet: string): Promise<boolean> {
+    async isValid(planet: string): Promise<boolean> {
       return new Promise((resolve) => resolve(true))
     }
   }
@@ -14,13 +15,13 @@ const makeSuitableValidator = (): SuitablePlanetValidator => {
 }
 
 type SutTypes = {
-  sut: SuitablePlanetValidation
+  sut: Validation
   suitablePlanetValidatorStub: SuitablePlanetValidator
 }
 
 const makeSut = (): SutTypes => {
   const suitablePlanetValidatorStub = makeSuitableValidator()
-  const sut = new SuitablePlanetValidation(field, suitablePlanetValidatorStub)
+  const sut = makeSuitablePlanetValidation(field, suitablePlanetValidatorStub)
   return {
     sut,
     suitablePlanetValidatorStub

@@ -3,6 +3,7 @@ import { gql } from 'apollo-server'
 export const typeDefs = gql`
   type Planet {
     name: String!
+    # porque a massa e o hasStation podem ser undefined?
     mass: Float
     hasStation: Boolean
   }

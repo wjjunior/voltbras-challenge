@@ -1,7 +1,7 @@
 import { LoadPlanetsRepository } from '../../../data/protocols/db/planet/load-planets-repository'
 import { PlanetModel } from '../../../domain/models/planet'
 import { DbLoadPlanets } from './db-load-planets'
-import { PlanetAdapter } from '../../../infra/planet/planet-adapter'
+import { planetAdapter } from '../../../infra/planet/planet-adapter'
 import { LoadStationsByPlanetRepository } from '../../../data/protocols/db/station/load-stations-by-planet-repository'
 import { StationModel } from '../add-station/db-add-station-protocols'
 
@@ -49,7 +49,7 @@ interface SutTypes {
 
 const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
   class LoadPlanetsRepositoryStub implements LoadPlanetsRepository {
-    async loadAll (pages: number): Promise<PlanetModel[]> {
+    async loadAll(pages: number): Promise<PlanetModel[]> {
       return new Promise((resolve) => resolve(makeFakePlanets()))
     }
   }
@@ -58,7 +58,7 @@ const makeLoadPlanetsRepository = (): LoadPlanetsRepository => {
 
 const makeLoadStationsByPlanetRepository = (): LoadStationsByPlanetRepository => {
   class LoadStationsByPlanetRepositoryStub implements LoadStationsByPlanetRepository {
-    async loadByPlanetsNames (planet: string[]): Promise<StationModel[]> {
+    async loadByPlanetsNames(planet: string[]): Promise<StationModel[]> {
       return new Promise((resolve) => resolve(makeFakeStations()))
     }
   }
@@ -67,9 +67,8 @@ const makeLoadStationsByPlanetRepository = (): LoadStationsByPlanetRepository =>
 
 const makeSut = (): SutTypes => {
   const loadPlanetsRepositoryStub = makeLoadPlanetsRepository()
-  const planetAdapter = new PlanetAdapter()
   const loadStationsByPlanetRepositoryStub = makeLoadStationsByPlanetRepository()
-  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub, planetAdapter,loadStationsByPlanetRepositoryStub)
+  const sut = new DbLoadPlanets(loadPlanetsRepositoryStub, planetAdapter, loadStationsByPlanetRepositoryStub)
   return {
     sut,
     loadPlanetsRepositoryStub,

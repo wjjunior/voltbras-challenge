@@ -1,8 +1,9 @@
-export async function asyncPool (poolLimit: number, array: number[], iteratorFn: any): Promise<any> {
+// massa
+export async function asyncPool<T>(poolLimit: number, array: number[], iteratorFn: (n: number) => Promise<T>): Promise<T[]> {
   const ret = []
   const executing = []
   for (const item of array) {
-    const p = Promise.resolve().then(() => iteratorFn(item, array))
+    const p = Promise.resolve().then(() => iteratorFn(item))
     ret.push(p)
 
     if (poolLimit <= array.length) {

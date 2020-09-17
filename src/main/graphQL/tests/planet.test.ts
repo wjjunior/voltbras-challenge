@@ -4,19 +4,16 @@ import { typeDefs, resolvers } from '../'
 import { ApolloServer } from 'apollo-server'
 import { PrismaHelper } from '../../../infra/db/postgresql/helpers/prismaHelper'
 
-beforeAll(async () => {
-  await PrismaHelper.connect()
-})
-
-afterAll(async () => {
-  await PrismaHelper.disconnect()
-})
+beforeAll(() => PrismaHelper.connect());
+afterAll(() => PrismaHelper.disconnect());
 
 interface SutTypes {
   sut: ApolloServerTestClient
   arcsecondApiStub: ArcsecondApi
 }
 
+// dava de usar a mesma função `makeSut` do station.test.ts, certo?
+// juntar as 2 num outro arquivo talvez
 const makeSut = (): SutTypes => {
   const arcsecondApiStub = new ArcsecondApi()
   const server = new ApolloServer({
